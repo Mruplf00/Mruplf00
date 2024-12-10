@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TON Wallet with DApps</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tonconnect/sdk@latest"></script>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1f4037, #99f2c8);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      max-width: 450px;
+      width: 90%;
+    }
+    h1 {
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: #99f2c8;
+    }
+    button {
+      background: #ff6f61;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px 0;
+      width: 100%;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #ff5144;
+    }
+    #dappInfo {
+      margin-top: 20px;
+      font-size: 14px;
+      word-break: break-word;
+    }
+    .alert {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TON Wallet with DApps</h1>
+    <button id="connectDAppButton">Connect to DApp</button>
+    <div id="dappInfo" class="info-box"></div>
+  </div>
+
+  <script>
+    const tonConnect = new TonConnect(); // تهيئة TonConnect SDK
+
+    // زر الاتصال بـ DApp
+    document.getElementById("connectDAppButton").addEventListener("click", async () => {
+      try {
+        // مطالبة المستخدم بربط المحفظة
+        await tonConnect.connectWallet();
+
+        // الحصول على بيانات المحفظة
+        const walletInfo = tonConnect.wallet;
+
+        if (walletInfo) {
+          document.getElementById("dappInfo").innerHTML = `
+            <h3>Connected to DApp</h3>
+            <p><strong>Wallet Address:</strong> ${walletInfo.account.address}</p>
+            <p><strong>Network:</strong> ${walletInfo.network}</p>
+          `;
+        }
+      } catch (error) {
+        console.error("Error connecting to DApp:", error);
+        alert("Failed to connect to DApp.");
+      }
+    });
+  </script>
+</body>
+</html>
